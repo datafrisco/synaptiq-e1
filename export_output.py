@@ -1,8 +1,4 @@
-"""Export the gold mart to a single CSV for the submission.
-
-The brief asks for the actual output rows. This isn't part of the daily
-pipeline — just a convenience to snapshot the final table to output/.
-"""
+"""Export the gold mart to a single CSV for the submission."""
 import pathlib
 import sys
 

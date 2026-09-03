@@ -35,7 +35,7 @@ def ingest_orders(spark: SparkSession, input_path: str, batch_date: str) -> Data
         .csv(input_path)
     )
 
-    return (
+    return (    ## source file, ingest timestamp, batch date as metadata columns
         raw.withColumn("_source_file", F.input_file_name())
         .withColumn("_ingest_ts", F.current_timestamp())
         .withColumn("_batch_date", F.lit(batch_date))   # the drop's date, not wall-clock
@@ -51,7 +51,7 @@ def write_bronze(df: DataFrame, table_path: str) -> None:
     (
         df.write
         .format("delta")
-        .mode("append")
+        .mode("append")     # keeps track of all ingested drops (one row per order_id per drop). Dedupes will happen in silver.
         .save(table_path)
     )
 

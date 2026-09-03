@@ -14,8 +14,8 @@ def clean_orders(bronze_df: DataFrame) -> DataFrame:
             F.to_date("order_date", "M/d/yyyy"),
             F.to_date(F.from_unixtime(F.col("order_date").cast("long"))),
         ))
-        # cast quantity to int. 
-        .withColumn("quantity", F.col("quantity").cast("int"))
+        # cast quantity to int. Note: this would currently silent-fail on a bad cast. 
+        .withColumn("quantity", F.col("quantity").cast("int"))  
         # strip $ and commas; always use DECIMAL(10,2) for money; e.g. $1,234.56 -> 1234.56
         .withColumn("unit_price",
                     F.regexp_replace("unit_price", r"[$,]", "").cast("decimal(10,2)"))
